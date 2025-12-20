@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalen Holden Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="header-info">
+                <div class="avatar">👤</div>
+                <div>
+                    <h3>Digital Consultant</h3>
+                    <p class="status"><span class="dot"></span>Online</p>
+                </div>
+            </div>
+            <button class="lang-btn" onclick="toggleLang()">🌍</button>
+            <div class="lang-menu" id="langMenu">
+                <button onclick="setLang('en')">English</button>
+                <button onclick="setLang('tr')">Türkçe</button>
+                <button onclick="setLang('de')">Deutsch</button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="messages"></div>
+
+        <div class="typing" id="typing" style="display:none">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="chat-input">
+            <textarea id="input" placeholder="Type your message..." rows="1"></textarea>
+            <button onclick="send()" id="sendBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="footer">Powered by Kalen Holden & Partners</div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="sheets.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>
