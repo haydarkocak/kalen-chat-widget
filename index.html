@@ -3,14 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalen Chat Widget</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>Kalen Holden & Partners - AI Business Consultant</title>
+    <meta name="description" content="AI-powered business consultant for international trade, partnerships, and legal support. Available in English, Turkish, and German.">
+    <meta name="keywords" content="business consultant, international trade, AI assistant, Kalen Holden, business partnerships">
+    <meta name="author" content="Kalen Holden & Partners">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Kalen Holden & Partners - AI Business Consultant">
+    <meta property="og:description" content="Get instant business consulting in multiple languages. Products, suppliers, partnerships, and legal support.">
+    <meta property="og:image" content="https://haydarkocak.github.io/kalen-chat-widget/logo-icon.png">
+    <meta property="og:url" content="https://haydarkocak.github.io/kalen-chat-widget/">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kalen Holden & Partners - AI Business Consultant">
+    <meta name="twitter:description" content="AI-powered business consulting in EN, TR, DE">
+    <meta name="twitter:image" content="https://haydarkocak.github.io/kalen-chat-widget/logo-icon.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo-icon.png">
+    <link rel="apple-touch-icon" href="logo-icon.png">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/chat.css">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Kalen Holden & Partners",
+      "url": "https://kalenholden.com",
+      "logo": "https://haydarkocak.github.io/kalen-chat-widget/logo-icon.png",
+      "description": "International business consulting and partnership services",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "email": "info@kalenholden.com",
+        "availableLanguage": ["English", "Turkish", "German"]
+      }
+    }
+    </script>
 </head>
 <body>
-    <!-- Chat widget HTML -->
-    
+    <!-- Chat Widget Container -->
+    <div id="kalen-chat-container">
+        <div class="kh-chat-wrapper">
+            <!-- Header -->
+            <div class="kh-chat-header">
+                <div class="kh-header-info">
+                    <div class="kh-avatar">
+                        <img src="logo-icon.png" 
+                             alt="Kalen Holden Logo" 
+                             loading="lazy"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div>
+                        <h3>Digital Consultant</h3>
+                        <p class="kh-status">
+                            <span class="kh-dot"></span>
+                            <span id="khStatusText">Online</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Language Selector -->
+                <button class="kh-lang-btn" 
+                        onclick="khToggleLang()" 
+                        aria-label="Change language"
+                        title="Change language">
+                    🌍
+                </button>
+                
+                <div class="kh-lang-menu" id="khLangMenu" role="menu">
+                    <button onclick="khSetLang('en')" role="menuitem">🇬🇧 English</button>
+                    <button onclick="khSetLang('tr')" role="menuitem">🇹🇷 Türkçe</button>
+                    <button onclick="khSetLang('de')" role="menuitem">🇩🇪 Deutsch</button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div class="kh-chat-messages" 
+                 id="khMessages" 
+                 role="log" 
+                 aria-live="polite"
+                 aria-atomic="false">
+                <!-- Messages will be inserted here dynamically -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="kh-typing" 
+                 id="khTyping" 
+                 style="display:none"
+                 aria-label="Assistant is typing">
+                <div class="kh-dot"></div>
+                <div class="kh-dot"></div>
+                <div class="kh-dot"></div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="kh-chat-input">
+                <textarea id="khInput" 
+                          placeholder="Type your message..." 
+                          rows="1"
+                          maxlength="2000"
+                          aria-label="Message input"
+                          autocomplete="off"
+                          spellcheck="true"></textarea>
+                
+                <button onclick="khSend()" 
+                        id="khSendBtn"
+                        aria-label="Send message"
+                        title="Send message (Enter)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="kh-footer">
+                <span>Powered by Kalen Holden &amp; Partners</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator (Hidden by default) -->
+    <div id="khLoadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center;">
+        <div style="background:white; padding:30px; border-radius:15px; text-align:center;">
+            <div class="kh-typing" style="display:flex; margin:0 auto;">
+                <div class="kh-dot"></div>
+                <div class="kh-dot"></div>
+                <div class="kh-dot"></div>
+            </div>
+            <p style="margin-top:15px; font-family:'Open Sans',sans-serif; color:#2a2a2a;">Loading...</p>
+        </div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="js/translations.js"></script>
     <script src="js/api.js"></script>
     <script src="js/sheets.js"></script>
     <script src="js/chat.js"></script>
+
+    <!-- Analytics (Optional - Add your tracking code) -->
+    <script>
+        // Google Analytics or other tracking
+        // window.dataLayer = window.dataLayer || [];
+        // function gtag(){dataLayer.push(arguments);}
+        // gtag('js', new Date());
+        // gtag('config', 'YOUR-GA-ID');
+    </script>
+
+    <!-- Service Worker for PWA (Optional) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // navigator.serviceWorker.register('/sw.js')
+                //     .then(reg => console.log('✅ Service Worker registered'))
+                //     .catch(err => console.log('❌ Service Worker registration failed:', err));
+            });
+        }
+    </script>
+
+    <!-- Error Boundary -->
+    <script>
+        window.addEventListener('error', function(event) {
+            console.error('❌ Global error:', event.error);
+            
+            // Show user-friendly error message
+            const container = document.getElementById('khMessages');
+            if (container && container.children.length === 0) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'kh-msg bot kh-error';
+                errorDiv.innerHTML = `
+                    <div class="kh-bubble">
+                        ⚠️ Something went wrong. Please refresh the page or contact us at 
+                        <a href="mailto:info@kalenholden.com" style="color:#D4AF37; text-decoration:underline;">info@kalenholden.com</a>
+                    </div>
+                `;
+                container.appendChild(errorDiv);
+            }
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('❌ Unhandled promise rejection:', event.reason);
+        });
+    </script>
+
+    <!-- Performance Monitoring -->
+    <script>
+        window.addEventListener('load', () => {
+            if (window.performance && window.performance.timing) {
+                const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                console.log('⚡ Page load time:', loadTime + 'ms');
+                
+                // Send to analytics if needed
+                // gtag('event', 'timing_complete', {
+                //     name: 'load',
+                //     value: loadTime,
+                //     event_category: 'Performance'
+                // });
+            }
+        });
+    </script>
+
+    <!-- Accessibility: Skip to main content -->
+    <a href="#khMessages" class="kh-sr-only" style="position:absolute; left:-9999px;">Skip to chat</a>
+
+    <!-- Noscript Fallback -->
+    <noscript>
+        <div style="position:fixed; top:0; left:0; width:100%; background:#D4AF37; color:#2a2a2a; padding:20px; text-align:center; font-family:'Open Sans',sans-serif; z-index:99999;">
+            ⚠️ JavaScript is required for this chat widget to work. Please enable JavaScript in your browser settings.
+            <br>
+            <a href="mailto:info@kalenholden.com" style="color:#2a2a2a; text-decoration:underline; font-weight:600;">Contact us via email instead</a>
+        </div>
+    </noscript>
 </body>
 </html>
