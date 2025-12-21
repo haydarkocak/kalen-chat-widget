@@ -294,11 +294,21 @@ function updateModelDisplay() {
 function addModelIndicator() {
   const header = document.querySelector('.kalen-header');
   if (!header) {
-    console.log('⚠️ Header not found, retrying...');
-    setTimeout(addModelIndicator, 500);
+    // Maksimum 3 deneme
+    const retryCount = addModelIndicator.retries || 0;
+    if (retryCount < 3) {
+      addModelIndicator.retries = retryCount + 1;
+      console.log(`⚠️ Header not found, retry ${retryCount + 1}/3...`);
+      setTimeout(addModelIndicator, 500);
+    } else {
+      console.log('❌ Header not found after 3 retries');
+    }
     return;
   }
   
+  // Reset retry counter
+  addModelIndicator.retries = 0;
+
   // Zaten varsa ekleme
   if (document.getElementById('kalen-model-indicator')) {
     return;
@@ -357,3 +367,4 @@ if (typeof originalToggle === 'function') {
 }
 
 console.log('✅ Model management module loaded');
+
