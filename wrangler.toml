@@ -1,0 +1,16 @@
+name = "kalen-chat-widget"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Hyperdrive binding - AWS PostgreSQL
+[[hyperdrive]]
+binding = "DB"
+id = "d33937ba86744e8dbef74f4619a08c48"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+
+# Secrets (Cloudflare Dashboard'dan eklenecek)
+# OPENROUTER_API_KEY
+# GROQ_API_KEY
