@@ -1,0 +1,37 @@
+{
+  "modelPriority": [1, 2, 3, 4],
+  "models": {
+    "1": {
+      "id": "claude",
+      "name": "👑 Claude 4.5 Sonnet",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.5",
+      "maxTokens": 2048,
+      "free": false
+    },
+    "2": {
+      "id": "deepseek",
+      "name": "🧠 DeepSeek V3.1",
+      "provider": "openrouter",
+      "model": "nex-agi/deepseek-v3.1-nex-n1:free",
+      "maxTokens": 4096,
+      "free": true
+    },
+    "3": {
+      "id": "mimo",
+      "name": "🌟 MiMo V2 Flash",
+      "provider": "openrouter",
+      "model": "xiaomi/mimo-v2-flash:free",
+      "maxTokens": 4096,
+      "free": true
+    },
+    "4": {
+      "id": "groq",
+      "name": "⚡ Groq Llama 3.3",
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "maxTokens": 2048,
+      "free": true
+    }
+  }
+}
