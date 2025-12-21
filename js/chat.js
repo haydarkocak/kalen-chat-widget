@@ -364,14 +364,25 @@ if (document.readyState === 'loading') {
 }
 
 // Widget toggle edildiğinde kontrol et
+// Widget toggle edildiğinde kontrol et
 const originalToggle = window.khToggleWidget;
 if (typeof originalToggle === 'function') {
   window.khToggleWidget = function() {
     originalToggle.call(this);
-    setTimeout(addModelIndicator, 500);
+    // Sadece widget açıkken ve header varsa çalıştır
+    const widgetContainer = document.getElementById('kalen-chat-widget');
+    if (widgetContainer && widgetContainer.classList.contains('kalen-open')) {
+      setTimeout(() => {
+        if (!document.getElementById('kalen-model-indicator')) {
+          addModelIndicator();
+        }
+      }, 500);
+    }
   };
 }
 
+
 console.log('✅ Model management module loaded');
+
 
 
