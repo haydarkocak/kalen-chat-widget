@@ -344,11 +344,17 @@ function addModelIndicator() {
 }
 
 // Widget açıldığında çalıştır
+// Widget açıldığında çalıştır
 function initModelManagement() {
   console.log('🚀 Initializing model management...');
   loadConfig();
-  setTimeout(addModelIndicator, 1000);
+  // Sadece 1 kez çalıştır
+  if (!initModelManagement.initialized) {
+    initModelManagement.initialized = true;
+    setTimeout(addModelIndicator, 1000);
+  }
 }
+
 
 // Sayfa yüklendiğinde başlat
 if (document.readyState === 'loading') {
@@ -367,4 +373,5 @@ if (typeof originalToggle === 'function') {
 }
 
 console.log('✅ Model management module loaded');
+
 
