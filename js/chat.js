@@ -254,11 +254,13 @@ if (typeof window !== 'undefined') {
     window.khSetLang = khSetLang;
     window.khClearChat = khClearChat;
 }
+
 // ============================================
-// MODEL YÖNETİMİ - Config Tabanlı
+// MODEL YÖNETİMİ - Config Tabanlı (v2)
 // ============================================
 
 let currentConfig = null;
+let modelIndicatorAdded = false;
 
 // Config'i yükle
 async function loadConfig() {
@@ -290,28 +292,17 @@ function updateModelDisplay() {
   }
 }
 
-// Widget header'a model göstergesi ekle
+// Model göstergesini ekle - SADECE 1 KEZ
 function addModelIndicator() {
-  const header = document.querySelector('.kalen-header');
-  if (!header) {
-    // Maksimum 3 deneme
-    const retryCount = addModelIndicator.retries || 0;
-    if (retryCount < 3) {
-      addModelIndicator.retries = retryCount + 1;
-      console.log(`⚠️ Header not found, retry ${retryCount + 1}/3...`);
-      setTimeout(addModelIndicator, 500);
-    } else {
-      console.log('❌ Header not found after 3 retries');
-    }
+  // Zaten eklendiyse çık
+  if (modelIndicatorAdded || document.getElementById('kalen-model-indicator')) {
     return;
   }
-  
-  // Reset retry counter
-  addModelIndicator.retries = 0;
 
-  // Zaten varsa ekleme
-  if (document.getElementById('kalen-model-indicator')) {
-    return;
+  const header = document.querySelector('.kalen-header');
+  if (!header) {
+    console.log('⏳ Waiting for header...');
+    return; // Tekrar deneme YOK
   }
   
   const indicator = document.createElement('div');
@@ -339,22 +330,46 @@ function addModelIndicator() {
   });
   
   header.appendChild(indicator);
+  modelIndicatorAdded = true;
   console.log('✅ Model indicator added');
   updateModelDisplay();
 }
 
-// Widget açıldığında çalıştır
-// Widget açıldığında çalıştır
-function initModelManagement() {
-  console.log('🚀 Initializing model management...');
-  loadConfig();
-  // Sadece 1 kez çalıştır
-  if (!initModelManagement.initialized) {
-    initModelManagement.initialized = true;
-    setTimeout(addModelIndicator, 1000);
+// MutationObserver ile header'ı izle
+function watchForHeader() {
+  const observer = new MutationObserver((mutations) => {
+    const header = document.querySelector('.kalen-header');
+    if (header && !modelIndicatorAdded) {
+      console.log('✅ Header detected!');
+      addModelIndicator();
+      observer.disconnect(); // İzlemeyi durdur
+    }
+  });
+
+  // Widget container'ı izle
+  const widgetContainer = document.getElementById('kalen-chat-widget');
+  if (widgetContainer) {
+    observer.observe(widgetContainer, {
+      childList: true,
+      subtree: true
+    });
+    console.log('👁️ Watching for header...');
+  } else {
+    // Widget henüz yoksa, body'yi izle
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+    console.log('👁️ Watching for widget...');
   }
 }
 
+// Başlat
+function initModelManagement() {
+  console.log('🚀 Initializing model management v2...');
+  loadConfig();
+  watchForHeader();
+}
 
 // Sayfa yüklendiğinde başlat
 if (document.readyState === 'loading') {
@@ -363,26 +378,9 @@ if (document.readyState === 'loading') {
   initModelManagement();
 }
 
-// Widget toggle edildiğinde kontrol et
-// Widget toggle edildiğinde kontrol et
-const originalToggle = window.khToggleWidget;
-if (typeof originalToggle === 'function') {
-  window.khToggleWidget = function() {
-    originalToggle.call(this);
-    // Sadece widget açıkken ve header varsa çalıştır
-    const widgetContainer = document.getElementById('kalen-chat-widget');
-    if (widgetContainer && widgetContainer.classList.contains('kalen-open')) {
-      setTimeout(() => {
-        if (!document.getElementById('kalen-model-indicator')) {
-          addModelIndicator();
-        }
-      }, 500);
-    }
-  };
-}
+console.log('✅ Model management v2 loaded');
 
 
-console.log('✅ Model management module loaded');
 
 
 
